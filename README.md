@@ -4,19 +4,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A Special Message 💐</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Great+Vibes&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 
 <style>
 body {
     margin: 0;
     font-family: "Inter", sans-serif;
     overflow: hidden;
-
-    /* 🌈 soft gradient glow */
     background: radial-gradient(circle at top, #ffe4ec, #fbcfe8, #e9d5ff);
 }
 
-/* ✨ floating glow particles */
+/* glow */
 .glow {
     position: absolute;
     width: 8px;
@@ -26,14 +24,12 @@ body {
     filter: blur(4px);
     animation: floatGlow 10s linear infinite;
 }
-
 @keyframes floatGlow {
     from { transform: translateY(100vh); opacity: 0; }
     50% { opacity: 1; }
     to { transform: translateY(-10vh); opacity: 0; }
 }
 
-/* layout */
 .container {
     text-align: center;
     padding-top: 60px;
@@ -56,7 +52,7 @@ h1 {
 }
 
 .flower-card {
-    background: rgba(255,255,255,0.85);
+    background: rgba(255,255,255,0.9);
     padding: 20px;
     border-radius: 18px;
     cursor: pointer;
@@ -76,6 +72,17 @@ h1 {
     margin-top: 20px;
 }
 
+/* button */
+.back-btn {
+    margin-top: 15px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    background: #be185d;
+    color: white;
+    cursor: pointer;
+}
+
 /* 💐 bouquet */
 .bouquet {
     position: fixed;
@@ -83,8 +90,12 @@ h1 {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=1200') center/cover;
-    transition: 2s ease;
+
+    background: 
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), /* overlay FIX */
+    url('https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=1200') center/cover;
+
+    transition: 1.8s ease;
     z-index: 5;
 }
 
@@ -92,15 +103,19 @@ h1 {
     bottom: 0;
 }
 
-/* final text */
+/* 💖 text now visible */
 .final {
     position: absolute;
     bottom: 80px;
     width: 100%;
     text-align: center;
-    color: white;
-    font-size: 18px;
-    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+
+    font-family: "Playfair Display", serif;
+    font-size: 20px;
+
+    color: #fff;
+    text-shadow: 0 5px 25px rgba(0,0,0,0.7);
+
     opacity: 0;
     transition: 1s;
 }
@@ -109,7 +124,7 @@ h1 {
     opacity: 1;
 }
 
-/* 🌸 petals */
+/* petals */
 .petal {
     position: absolute;
     font-size: 14px;
@@ -123,9 +138,9 @@ h1 {
 
 <body>
 
-<!-- ✨ glow particles -->
+<!-- glow -->
 <script>
-for (let i = 0; i < 40; i++) {
+for (let i = 0; i < 35; i++) {
     const g = document.createElement("div");
     g.className = "glow";
     g.style.left = Math.random()*100 + "vw";
@@ -148,16 +163,14 @@ for (let i = 0; i < 40; i++) {
 <div id="message-section">
 <h2 id="title"></h2>
 <p id="msg"></p>
+<button class="back-btn" onclick="goBack()">Choose Another</button>
 </div>
 
 </div>
 
 <!-- bouquet -->
 <div id="bouquet" class="bouquet">
-<div class="final">
-Happy Birthday 💖<br>
-you deserve something soft like this 🌸
-</div>
+<div class="final" id="finalText"></div>
 </div>
 
 <script>
@@ -179,10 +192,18 @@ document.getElementById("message-section").style.display = "block";
 
 setTimeout(() => {
 document.getElementById("bouquet").classList.add("show");
+document.getElementById("finalText").innerHTML =
+"Happy Birthday 💖<br>" + messages[type];
+
 createPetals();
 }, 2000);
 };
 });
+
+function goBack() {
+document.getElementById("bouquet").classList.remove("show");
+document.getElementById("message-section").style.display = "none";
+}
 
 /* petals */
 function createPetals(){
